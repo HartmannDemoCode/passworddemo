@@ -4,6 +4,10 @@ import dk.cphbusiness.persistence.HibernateConfig;
 import dk.cphbusiness.security.entities.Role;
 import dk.cphbusiness.security.entities.User;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityNotFoundException;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Purpose:
@@ -28,6 +32,16 @@ public class UserDAO {
     public void createUser(User user) {
         try(var em = emf.createEntityManager()){
 
+            Set<Role> newRoleSet = new HashSet<>();
+            user.getRoles().forEach(role->{
+                Role foundRole = em.find(Role.class, role.getName());
+                if(foundRole == null){
+                    throw new EntityNotFoundException("No role found with that id");
+                } else {
+                    newRoleSet.add(foundRole);
+                }
+            });
+            user.setRoles(newRoleSet);
             em.getTransaction().begin();
             em.persist(user);
             em.getTransaction().commit();
@@ -50,9 +64,11 @@ public class UserDAO {
     public static void main(String[] args) {
         UserDAO userDAO = UserDAO.getInstance();
         User user = new User("user1", "admin");
-        Role role = new Role("user");
-        user.addRole(role);
-        userDAO.createRole(role);
+        Role userRole = new Role("user");
+        Role adminRole = new Role("admin");
+        user.addRole(userRole);
+        userDAO.createRole(userRole);
+        userDAO.createRole(adminRole);
         userDAO.createUser(user);
     }
 }

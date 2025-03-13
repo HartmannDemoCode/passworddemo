@@ -2,6 +2,7 @@ package dk.cphbusiness.security.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.HashSet;
@@ -13,6 +14,7 @@ import java.util.Set;
  * @author: Thomas Hartmann
  */
 @Getter
+@Setter
 @Entity
 @Table(name="users")
 @NamedQueries(@NamedQuery(name = "User.deleteAllRows", query = "DELETE from User"))
