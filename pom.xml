@@ -23,7 +23,7 @@
         <testcontainers.version>1.18.0</testcontainers.version>
 <!--        <logging.version>2.14.1</logging.version>-->
 <!--        <jwt.version>9.0.1</jwt.version>-->
-        <token.security.version>1.0.2</token.security.version>
+        <token.security.version>1.0.4</token.security.version>
         <jbcrypt.version>0.4</jbcrypt.version>
         <!-- DATABASE PROJECT NAME ON SERVER  -->
         <db.name>passworddemo</db.name>

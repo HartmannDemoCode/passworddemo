@@ -1,0 +1,33 @@
+GET localhost:7070/api/dog
+
+###
+POST http://localhost:7070/api/dog
+Content-Type: "application/json"
+
+{
+    "name": "Fjodur",
+    "breed": "Danish Swedish Farm Dog",
+    "gender": "M",
+    "age": 7
+}
+
+###
+PUT localhost:7070/api/dog/3
+Content-Type: "application/json"
+
+{
+    "name": "Sonja",
+    "breed": "Danish Swedish Farm Dog",
+    "gender": "F",
+    "age": 7
+}
+
+###
+POST http://localhost:7070/api/auth/register
+Content-Type: "application/json"
+
+{
+"username":"user1",
+"password":"p1234"
+}
+
