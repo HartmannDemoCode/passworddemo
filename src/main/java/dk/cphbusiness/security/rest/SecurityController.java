@@ -1,6 +1,8 @@
 package dk.cphbusiness.security.rest;
 
 import dk.bugelhartmann.UserDTO;
+import dk.cphbusiness.security.UserDAO;
+import dk.cphbusiness.security.entities.User;
 import io.javalin.http.Handler;
 
 import java.util.Set;
@@ -11,11 +13,12 @@ import java.util.Set;
  * @author: Thomas Hartmann
  */
 public class SecurityController implements ISecurityController {
-
+    private UserDAO userDAO = UserDAO.getInstance();
     @Override
     public Handler register(){
         return (ctx)->{
             UserDTO newUser = ctx.bodyAsClass(UserDTO.class);
+            userDAO.createUser(new User(newUser.getUsername(), newUser.getPassword()));
             ctx.json(newUser);
         };
     }

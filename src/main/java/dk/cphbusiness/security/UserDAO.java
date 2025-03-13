@@ -33,6 +33,14 @@ public class UserDAO {
         try(var em = emf.createEntityManager()){
 
             Set<Role> newRoleSet = new HashSet<>();
+            if(user.getRoles().size() == 0){
+                Role userRole = em.find(Role.class, "user");
+                if(userRole == null){
+                    userRole = new Role("user");
+                    em.persist(userRole);
+                }
+                user.addRole(userRole);
+            }
             user.getRoles().forEach(role->{
                 Role foundRole = em.find(Role.class, role.getName());
                 if(foundRole == null){
