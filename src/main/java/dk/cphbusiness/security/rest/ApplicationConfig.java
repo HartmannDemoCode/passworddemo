@@ -19,6 +19,7 @@ public class ApplicationConfig {
     private static JavalinConfig javalinConfig;
     private ObjectMapper objectMapper = new ObjectMapper();
     private ApplicationConfig(){}
+    private ISecurityController securityController = new SecurityController();
 
     public static ApplicationConfig getInstance(){
         if(applicationConfig == null){
@@ -48,8 +49,15 @@ public class ApplicationConfig {
         return applicationConfig;
     }
 
+    public ApplicationConfig checkSecurityRoles() {
+        app.beforeMatched(securityController.authenticate()); // check if there is a valid token in the header
+        app.beforeMatched(securityController.authorize()); // check if the user has the required role
+        return applicationConfig;
+    }
+
     public ApplicationConfig handleException(){
         app.exception(Exception.class, (e,ctx)->{
+            e.printStackTrace();
             ObjectNode node = objectMapper.createObjectNode();
             node.put("msg",e.getMessage());
             ctx.status(500);

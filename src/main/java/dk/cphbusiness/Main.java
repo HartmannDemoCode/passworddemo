@@ -13,6 +13,8 @@ public class Main {
         ApplicationConfig
                 .getInstance()
                 .initiateServer()
+                .checkSecurityRoles()
+                .handleException()
                 .setRoute(Routes.getRoutes())
                 .startServer(7070);
     }
