@@ -21,7 +21,7 @@ public class Routes {
         {
             path("auth", () -> {
                 post("register", securityController.register());
-                post("login", (ctx)->{});
+                post("login", securityController.login());
             });
         };
     }

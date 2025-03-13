@@ -27,7 +27,16 @@ POST http://localhost:7070/api/auth/register
 Content-Type: "application/json"
 
 {
-"username":"user1",
+"username":"user6",
+"password":"p1234"
+}
+
+###
+POST http://localhost:7070/api/auth/login
+Content-Type: "application/json"
+
+{
+"username":"user5",
 "password":"p1234"
 }
 

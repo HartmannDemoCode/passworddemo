@@ -1,13 +1,17 @@
 package dk.cphbusiness.security;
 
+import dk.bugelhartmann.UserDTO;
+import dk.cphbusiness.exceptions.ValidationException;
 import dk.cphbusiness.persistence.HibernateConfig;
 import dk.cphbusiness.security.entities.Role;
 import dk.cphbusiness.security.entities.User;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityNotFoundException;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Purpose:
@@ -29,7 +33,7 @@ public class UserDAO {
         return null;
     }
 
-    public void createUser(User user) {
+    public User createUser(User user) {
         try(var em = emf.createEntityManager()){
 
             Set<Role> newRoleSet = new HashSet<>();
@@ -53,13 +57,28 @@ public class UserDAO {
             em.getTransaction().begin();
             em.persist(user);
             em.getTransaction().commit();
+        } catch(Throwable ex){
+            ex.printStackTrace();
         }
+        return user;
     }
     public void createRole(Role role) {
         try(var em = emf.createEntityManager()){
             em.getTransaction().begin();
             em.persist(role);
             em.getTransaction().commit();
+        }
+    }
+
+    public UserDTO getVerifiedUser(String username, String password) throws ValidationException {
+        try (EntityManager em = emf.createEntityManager()) {
+            User user = em.find(User.class, username);
+            if (user == null)
+                throw new EntityNotFoundException("No user found with username: " + username); //RuntimeException
+            user.getRoles().size(); // force roles to be fetched from db
+            if (!user.verifyPassword(password))
+                throw new ValidationException("Wrong password");
+            return new UserDTO(user.getUsername(), user.getRoles().stream().map(r -> r.getName()).collect(Collectors.toSet()));
         }
     }
 

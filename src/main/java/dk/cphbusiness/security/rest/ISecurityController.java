@@ -10,6 +10,6 @@ public interface ISecurityController {
     Handler register(); // to make a new User and get a token
     Handler authenticate(); // to verify that a token was sent with the request and that it is a valid, non-expired token
     boolean authorize(UserDTO userDTO, Set<String> allowedRoles); // to verify user roles
-    String createToken(UserDTO user) throws Exception;
-    UserDTO verifyToken(String token) throws Exception;
+//    String createToken(UserDTO user) throws Exception;
+//    UserDTO verifyToken(String token) throws Exception;
 }
